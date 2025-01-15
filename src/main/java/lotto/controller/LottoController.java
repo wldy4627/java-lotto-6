@@ -18,6 +18,10 @@ public class LottoController {
 
     public void run() {
         int purchaseAmount = getLottoPurchaseAmount();
+
+        int lottoCnt = purchaseAmount / 1000;
+        output.printLottoCnt(lottoCnt);
+        output.printLottoNumbers(lottoService.getLottos(lottoCnt));
     }
 
     private int getLottoPurchaseAmount() {
