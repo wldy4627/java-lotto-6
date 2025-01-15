@@ -25,17 +25,13 @@ public class LottoController {
             try {
                 output.printLottoPurchaseMessage();
                 int purchaseAmount = input.scanLottoPurchaseAmount();
-                validatePurchaseAmount(purchaseAmount);
+
+                lottoService.validatePurchaseAmount(purchaseAmount);
+
                 return purchaseAmount;
             } catch (IllegalArgumentException e) {
                 output.printErrorMessage(e.getMessage());
             }
-        }
-    }
-
-    private void validatePurchaseAmount(int purchaseAmount) {
-        if (!lottoService.isDivisibleByThousand(purchaseAmount)) {
-            throw new IllegalArgumentException("[ERROR] 로또 구매 금액은 1,000원 단위여야 합니다.");
         }
     }
 
