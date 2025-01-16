@@ -38,22 +38,36 @@ public class LottoService {
         List<Integer> chosenLottoNum = new ArrayList<>();
 
         for (int lottoNumber : lottoNumbersArray) {
-            validateLottoNumber(lottoNumber);
+            validateRange(lottoNumber);
             chosenLottoNum.add(lottoNumber);
         }
+
+        validateDuplicate(chosenLottoNum);
 
         return chosenLottoNum;
     }
 
-    public int setBonusNumbers(int number) {
-        validateLottoNumber(number);
+    public int setBonusNumbers(int number, List<Integer> chosenLottoNum) {
+        validateRange(number);
+
+        chosenLottoNum.add(number);
+        validateDuplicate(chosenLottoNum);
 
         return number;
     }
 
-    private void validateLottoNumber(int lottoNumber) {
+    private void validateRange(int lottoNumber) {
         if (lottoNumber < 1 || lottoNumber > 45) {
             throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
+        }
+    }
+
+    private void validateDuplicate(List<Integer> chosenLottoNum) {
+        Set<Integer> set  = new HashSet<>();
+        for (Integer number : chosenLottoNum) {
+            if (!set.add(number)) {
+                throw new IllegalArgumentException("[ERROR] 로또 번호는 중복되지 않아야 합니다.");
+            }
         }
     }
 

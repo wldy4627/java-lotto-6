@@ -54,7 +54,7 @@ public class LottoController {
                 List<Integer> chosenLottoNum = lottoService.setLottoNumbers(input.scanChooseLottoNumbers());
 
                 output.printChooseBonusNumbersMessage();
-                chosenLottoNum.add(lottoService.setBonusNumbers(input.scanChooseBonusNumbers()));
+                chosenLottoNum.add(lottoService.setBonusNumbers(input.scanChooseBonusNumbers(), chosenLottoNum));
 
                 return chosenLottoNum;
             } catch (IllegalArgumentException e) {
