@@ -3,6 +3,7 @@ package lotto.view;
 import lotto.Lotto;
 
 import java.util.List;
+import java.util.Map;
 
 public class Output {
 
@@ -27,9 +28,21 @@ public class Output {
         System.out.println("\n" + Message.CHOOSE_BONUS_NUMBERS.getMessage());
     }
 
+    public void printLottoResult(Map<Integer, Integer> lottoResult, List<String> lottoResultStr) {
+        System.out.println("\n당첨통계\n---");
+        int i = 0;
+        for (Integer key : lottoResult.keySet()) {
+            System.out.println(lottoResultStr.get(i) + " - " + lottoResult.get(key) + "개");
+            i++;
+        }
+    }
+
+    public void printLottoProfit(double profitRate) {
+        System.out.printf("총 수익률은 %.2f%%입니다.", profitRate);
+    }
+
     public void printErrorMessage(String message) {
         System.out.println(message);
     }
-
 
 }

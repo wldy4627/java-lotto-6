@@ -4,6 +4,7 @@ import lotto.service.LottoService;
 import lotto.view.Input;
 import lotto.view.Output;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LottoController {
@@ -27,6 +28,8 @@ public class LottoController {
 
         List<Integer> chosenLottoNum = chooseLottoNumbers();
 
+        output.printLottoResult(lottoService.computeLottoResult(chosenLottoNum), initializeLottoResultStr());
+        output.printLottoProfit(lottoService.calculateLottoProfit(purchaseAmount));
     }
 
     private int getLottoPurchaseAmount() {
@@ -58,5 +61,17 @@ public class LottoController {
                 output.printErrorMessage(e.getMessage());
             }
         }
+    }
+
+    private List<String> initializeLottoResultStr() {
+        List<String> lottoResultStr = new ArrayList<>();
+
+        lottoResultStr.add("3개 일치 (5,000원)");
+        lottoResultStr.add("4개 일치 (50,000원)");
+        lottoResultStr.add("5개 일치 (1,500,000원)");
+        lottoResultStr.add("5개 일치, 보너스 볼 일치 (30,000,000원)");
+        lottoResultStr.add("6개 일치 (2,000,000,000원)");
+
+        return lottoResultStr;
     }
 }
