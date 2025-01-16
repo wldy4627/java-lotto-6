@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LottoService {
+    List<Lotto> lottos = new ArrayList<>();
 
     public void validatePurchaseAmount(int purchaseAmount) {
         if (!isDivisibleByThousand(purchaseAmount)) {
@@ -19,7 +20,6 @@ public class LottoService {
     }
 
     public List<Lotto> getLottos(int lottoCnt) {
-        List<Lotto> lottos = new ArrayList<>();
 
         for (int i = 0; i < lottoCnt; i++) {
             List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
