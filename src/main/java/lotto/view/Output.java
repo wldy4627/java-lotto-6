@@ -19,6 +19,14 @@ public class Output {
         }
     }
 
+    public void printChooseLottoNumbersMessage() {
+        System.out.println("\n" + Message.CHOOSE_LOTTO_NUMBERS.getMessage());
+    }
+
+    public void printChooseBonusNumbersMessage() {
+        System.out.println("\n" + Message.CHOOSE_BONUS_NUMBERS.getMessage());
+    }
+
     public void printErrorMessage(String message) {
         System.out.println(message);
     }

@@ -4,6 +4,8 @@ import lotto.service.LottoService;
 import lotto.view.Input;
 import lotto.view.Output;
 
+import java.util.List;
+
 public class LottoController {
 
     private final Output output;
@@ -22,6 +24,8 @@ public class LottoController {
         int lottoCnt = purchaseAmount / 1000;
         output.printLottoCnt(lottoCnt);
         output.printLottoNumbers(lottoService.getLottos(lottoCnt));
+
+        List<Integer> chosenLottoNum = chooseLottoNumbers();
     }
 
     private int getLottoPurchaseAmount() {
@@ -39,5 +43,22 @@ public class LottoController {
         }
     }
 
+    private List<Integer> chooseLottoNumbers() {
+        while (true) {
+            try {
+                output.printChooseLottoNumbersMessage();
+                List<Integer> chosenLottoNum = lottoService.setLottoNumbers(input.scanChooseLottoNumbers());
+
+                output.printChooseBonusNumbersMessage();
+                int chosenBonusNum = lottoService.setBonusNumbers(input.scanChooseBonusNumbers());
+
+                chosenLottoNum.add(chosenBonusNum);
+
+                return chosenLottoNum;
+            } catch (IllegalArgumentException e) {
+                output.printErrorMessage(e.getMessage());
+            }
+        }
+    }
 
 }

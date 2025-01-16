@@ -4,6 +4,7 @@ import camp.nextstep.edu.missionutils.Randoms;
 import lotto.Lotto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LottoService {
@@ -28,5 +29,32 @@ public class LottoService {
         }
 
         return lottos;
+    }
+
+    public List<Integer> setLottoNumbers(String numbers) {
+        Integer[] lottoNumbersArray = Arrays.stream(numbers.split(","))
+                                        .map(Integer::parseInt)
+                                        .toArray(Integer[]::new);
+
+        List<Integer> chosenLottoNum = new ArrayList<>();
+
+        for (int lottoNumber : lottoNumbersArray) {
+            validateLottoNumber(lottoNumber);
+            chosenLottoNum.add(lottoNumber);
+        }
+
+        return chosenLottoNum;
+    }
+
+    public int setBonusNumbers(int number) {
+        validateLottoNumber(number);
+
+        return number;
+    }
+
+    private void validateLottoNumber(int lottoNumber) {
+        if (lottoNumber < 1 || lottoNumber > 45) {
+            throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
+        }
     }
 }
