@@ -38,7 +38,7 @@ public class Output {
     }
 
     public void printLottoProfit(double profitRate) {
-        System.out.printf("총 수익률은 %.2f%%입니다.", profitRate);
+        System.out.printf("총 수익률은 %.1f%%입니다.", profitRate);
     }
 
     public void printErrorMessage(String message) {
