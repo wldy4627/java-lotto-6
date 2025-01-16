@@ -89,17 +89,7 @@ public class LottoService {
 
             boolean bonusMatch = purchasedLottoNum.contains(bonusNum);
 
-            if (matchCount == 6) {
-                lottoResult.put(MATCH_6_REWARD, lottoResult.get(2000000000) + 1);
-            } else if (matchCount == 5 && bonusMatch) {
-                lottoResult.put(MATCH_5_BONUS_REWARD, lottoResult.get(30000000) + 1);
-            } else if (matchCount == 5) {
-                lottoResult.put(MATCH_5_REWARD, lottoResult.get(1500000) + 1);
-            } else if (matchCount == 4) {
-                lottoResult.put(MATCH_4_REWARD, lottoResult.get(50000) + 1);
-            } else if (matchCount == 3) {
-                lottoResult.put(MATCH_3_REWARD, lottoResult.get(5000) + 1);
-            }
+            updateLottoResult(matchCount, bonusMatch, lottoResult);
         }
 
         return lottoResult;
@@ -111,6 +101,20 @@ public class LottoService {
         lottoResult.put(MATCH_5_REWARD, 0);
         lottoResult.put(MATCH_5_BONUS_REWARD, 0);
         lottoResult.put(MATCH_6_REWARD, 0);
+    }
+
+    private void updateLottoResult(int matchCount, boolean bonusMatch, Map<Integer, Integer> lottoResult) {
+        if (matchCount == 6) {
+            lottoResult.put(MATCH_6_REWARD, lottoResult.get(2000000000) + 1);
+        } else if (matchCount == 5 && bonusMatch) {
+            lottoResult.put(MATCH_5_BONUS_REWARD, lottoResult.get(30000000) + 1);
+        } else if (matchCount == 5) {
+            lottoResult.put(MATCH_5_REWARD, lottoResult.get(1500000) + 1);
+        } else if (matchCount == 4) {
+            lottoResult.put(MATCH_4_REWARD, lottoResult.get(50000) + 1);
+        } else if (matchCount == 3) {
+            lottoResult.put(MATCH_3_REWARD, lottoResult.get(5000) + 1);
+        }
     }
 
     public Double calculateLottoProfit(int purchaseAmount, Map<Integer, Integer> lottoResult) {
