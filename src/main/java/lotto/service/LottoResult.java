@@ -2,6 +2,7 @@ package lotto.service;
 
 import lotto.Lotto;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,11 +22,12 @@ public class LottoResult {
         lottoResult.put(MATCH_6_REWARD, 0);
     }
 
-    public Map<Integer, Integer> computeLottoResult(List<Integer> chosenLottoNum, List<Lotto> lottos, Map<Integer, Integer> lottoResult) {
+    public Map<Integer, Integer> computeLottoResult(List<Integer> chosenLottoNum, List<Lotto> lottos) {
         int bonusNum = chosenLottoNum.get(6);
         List<Integer> lottoNum = chosenLottoNum.subList(0, 6);
 
-        initializeLottoResult(lottoResult);
+        Map<Integer, Integer> lottoResultMap = new HashMap<>();
+        initializeLottoResult(lottoResultMap);
 
         for (Lotto lotto : lottos) {
             List<Integer> purchasedLottoNum = lotto.getNumbers();
@@ -35,10 +37,10 @@ public class LottoResult {
 
             boolean bonusMatch = purchasedLottoNum.contains(bonusNum);
 
-            updateLottoResult(matchCount, bonusMatch, lottoResult);
+            updateLottoResult(matchCount, bonusMatch, lottoResultMap);
         }
 
-        return lottoResult;
+        return lottoResultMap;
     }
 
     private void updateLottoResult(int matchCount, boolean bonusMatch, Map<Integer, Integer> lottoResult) {
@@ -54,7 +56,6 @@ public class LottoResult {
             lottoResult.put(MATCH_3_REWARD, lottoResult.get(MATCH_3_REWARD) + 1);
         }
     }
-
 
     // 수익률 계산
     public Double calculateLottoProfit(int purchaseAmount, Map<Integer, Integer> lottoResult) {

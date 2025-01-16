@@ -35,8 +35,7 @@ public class LottoController {
         output.printLottoNumbers(lottos);
 
         List<Integer> chosenLottoNum = chooseLottoNumbers();
-        Map<Integer, Integer> lottoResultMap = new LinkedHashMap<>();
-        lottoResultMap = lottoResult.computeLottoResult(chosenLottoNum, lottos, lottoResultMap);
+        Map<Integer, Integer> lottoResultMap = lottoResult.computeLottoResult(chosenLottoNum, lottos);
 
         output.printLottoResult(lottoResultMap, initializeLottoResultStr());
         output.printLottoProfit(lottoResult.calculateLottoProfit(purchaseAmount, lottoResultMap));
