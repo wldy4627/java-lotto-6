@@ -6,8 +6,6 @@ import lotto.Lotto;
 import java.util.*;
 
 public class LottoService {
-    List<Lotto> lottos = new ArrayList<>();
-    Map<Integer, Integer> lottoResult = new LinkedHashMap<>();
 
     public void validatePurchaseAmount(int purchaseAmount) {
         if (!isDivisibleByThousand(purchaseAmount)) {
@@ -20,6 +18,7 @@ public class LottoService {
     }
 
     public List<Lotto> getLottos(int lottoCnt) {
+        List<Lotto> lottos = new ArrayList<>();
 
         for (int i = 0; i < lottoCnt; i++) {
             List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
@@ -71,11 +70,11 @@ public class LottoService {
         }
     }
 
-    public Map<Integer, Integer> computeLottoResult(List<Integer> chosenLottoNum) {
+    public Map<Integer, Integer> computeLottoResult(List<Integer> chosenLottoNum, List<Lotto> lottos, Map<Integer, Integer> lottoResult) {
         int bonusNum = chosenLottoNum.get(6);
         List<Integer> lottoNum = chosenLottoNum.subList(0, 6);
 
-        initializeLottoResult();
+        initializeLottoResult(lottoResult);
 
         for (Lotto lotto : lottos) {
             List<Integer> purchasedLottoNum = lotto.getNumbers();
@@ -101,7 +100,7 @@ public class LottoService {
         return lottoResult;
     }
 
-    private void initializeLottoResult() {
+    private void initializeLottoResult(Map<Integer, Integer> lottoResult) {
         lottoResult.put(5000, 0);
         lottoResult.put(50000, 0);
         lottoResult.put(1500000, 0);
@@ -109,13 +108,13 @@ public class LottoService {
         lottoResult.put(2000000000, 0);
     }
 
-    public Double calculateLottoProfit(int purchaseAmount) {
-        int totalProfit = calculateTotalProfit();
+    public Double calculateLottoProfit(int purchaseAmount, Map<Integer, Integer> lottoResult) {
+        int totalProfit = calculateTotalProfit(lottoResult);
 
         return ((double) totalProfit / purchaseAmount) * 100;
     }
 
-    private int calculateTotalProfit() {
+    private int calculateTotalProfit(Map<Integer, Integer> lottoResult) {
         int totalProfit = 0;
 
         for (Map.Entry<Integer, Integer> entry : lottoResult.entrySet()) {

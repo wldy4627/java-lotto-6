@@ -1,11 +1,14 @@
 package lotto.controller;
 
+import lotto.Lotto;
 import lotto.service.LottoService;
 import lotto.view.Input;
 import lotto.view.Output;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LottoController {
 
@@ -24,12 +27,16 @@ public class LottoController {
 
         int lottoCnt = purchaseAmount / 1000;
         output.printLottoCnt(lottoCnt);
-        output.printLottoNumbers(lottoService.getLottos(lottoCnt));
+
+        List<Lotto> lottos = lottoService.getLottos(lottoCnt);
+        output.printLottoNumbers(lottos);
 
         List<Integer> chosenLottoNum = chooseLottoNumbers();
+        Map<Integer, Integer> lottoResult = new LinkedHashMap<>();
+        lottoResult = lottoService.computeLottoResult(chosenLottoNum, lottos, lottoResult);
 
-        output.printLottoResult(lottoService.computeLottoResult(chosenLottoNum), initializeLottoResultStr());
-        output.printLottoProfit(lottoService.calculateLottoProfit(purchaseAmount));
+        output.printLottoResult(lottoResult, initializeLottoResultStr());
+        output.printLottoProfit(lottoService.calculateLottoProfit(purchaseAmount, lottoResult));
     }
 
     private int getLottoPurchaseAmount() {
