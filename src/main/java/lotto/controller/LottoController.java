@@ -1,6 +1,7 @@
 package lotto.controller;
 
 import lotto.Lotto;
+import lotto.service.LottoResult;
 import lotto.service.LottoService;
 import lotto.view.Input;
 import lotto.view.Output;
@@ -15,11 +16,13 @@ public class LottoController {
     private final Output output;
     private final Input input;
     private final LottoService lottoService;
+    private final LottoResult lottoResult;
 
-    public LottoController(Output output, Input input, LottoService lottoService) {
+    public LottoController(Output output, Input input, LottoService lottoService, LottoResult lottoResult) {
         this.output = output;
         this.input = input;
         this.lottoService = lottoService;
+        this.lottoResult = lottoResult;
     }
 
     public void run() {
@@ -32,11 +35,11 @@ public class LottoController {
         output.printLottoNumbers(lottos);
 
         List<Integer> chosenLottoNum = chooseLottoNumbers();
-        Map<Integer, Integer> lottoResult = new LinkedHashMap<>();
-        lottoResult = lottoService.computeLottoResult(chosenLottoNum, lottos, lottoResult);
+        Map<Integer, Integer> lottoResultMap = new LinkedHashMap<>();
+        lottoResultMap = lottoResult.computeLottoResult(chosenLottoNum, lottos, lottoResultMap);
 
-        output.printLottoResult(lottoResult, initializeLottoResultStr());
-        output.printLottoProfit(lottoService.calculateLottoProfit(purchaseAmount, lottoResult));
+        output.printLottoResult(lottoResultMap, initializeLottoResultStr());
+        output.printLottoProfit(lottoResult.calculateLottoProfit(purchaseAmount, lottoResultMap));
     }
 
     private int getLottoPurchaseAmount() {
