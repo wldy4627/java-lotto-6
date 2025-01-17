@@ -1,13 +1,11 @@
 package lotto.controller;
 
 import lotto.Lotto;
-import lotto.service.LottoResult;
 import lotto.service.LottoService;
 import lotto.view.Input;
 import lotto.view.Output;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,13 +14,11 @@ public class LottoController {
     private final Output output;
     private final Input input;
     private final LottoService lottoService;
-    private final LottoResult lottoResult;
 
-    public LottoController(Output output, Input input, LottoService lottoService, LottoResult lottoResult) {
+    public LottoController(Output output, Input input, LottoService lottoService) {
         this.output = output;
         this.input = input;
         this.lottoService = lottoService;
-        this.lottoResult = lottoResult;
     }
 
     public void run() {
@@ -31,14 +27,14 @@ public class LottoController {
         int lottoCnt = purchaseAmount / 1000;
         output.printLottoCnt(lottoCnt);
 
-        List<Lotto> lottos = lottoService.getLottos(lottoCnt);
+        List<Lotto> lottos = lottoService.generatorLottos(lottoCnt);
         output.printLottoNumbers(lottos);
 
         List<Integer> chosenLottoNum = chooseLottoNumbers();
-        Map<Integer, Integer> lottoResultMap = lottoResult.computeLottoResult(chosenLottoNum, lottos);
+        Map<Integer, Integer> lottoResultMap = lottoService.computeLottoResult(chosenLottoNum, lottos);
 
         output.printLottoResult(lottoResultMap, initializeLottoResultStr());
-        output.printLottoProfit(lottoResult.calculateLottoProfit(purchaseAmount, lottoResultMap));
+        output.printLottoProfit(lottoService.calculateProfit(purchaseAmount, lottoResultMap));
     }
 
     private int getLottoPurchaseAmount() {
@@ -59,11 +55,11 @@ public class LottoController {
     private List<Integer> chooseLottoNumbers() {
         while (true) {
             try {
-                output.printChooseLottoNumbersMessage();
-                List<Integer> chosenLottoNum = lottoService.setLottoNumbers(input.scanChooseLottoNumbers());
+                output.printChooseLottoNumMessage();
+                List<Integer> chosenLottoNum = new ArrayList<>(lottoService.chooseLottoNum(input.scanChooseLottoNum()));
 
-                output.printChooseBonusNumbersMessage();
-                chosenLottoNum.add(lottoService.setBonusNumbers(input.scanChooseBonusNumbers(), chosenLottoNum));
+                output.printChooseBonusNumMessage();
+                chosenLottoNum.add(lottoService.setBonusNum(input.scanChooseBonusNum(), chosenLottoNum));
 
                 return chosenLottoNum;
             } catch (IllegalArgumentException e) {

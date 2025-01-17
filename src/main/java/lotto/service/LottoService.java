@@ -6,67 +6,54 @@ import lotto.Lotto;
 import java.util.*;
 
 public class LottoService {
+    private final LottoValidator validator = new LottoValidator();
+    private final LottoProfitCalculator profitCalculator = new LottoProfitCalculator();
 
     public void validatePurchaseAmount(int purchaseAmount) {
-        if (!isDivisibleByThousand(purchaseAmount)) {
-            throw new IllegalArgumentException("[ERROR] 로또 구매 금액은 1,000원 단위여야 합니다.");
-        }
+        validator.validatePurchaseAmount(purchaseAmount);
     }
 
-    public boolean isDivisibleByThousand(int amount) {
-        return amount % 1000 == 0;
-    }
-
-    public List<Lotto> getLottos(int lottoCnt) {
+    public List<Lotto> generatorLottos(int lottoCnt) {
         List<Lotto> lottos = new ArrayList<>();
 
         for (int i = 0; i < lottoCnt; i++) {
             List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
-            Lotto lotto = new Lotto(numbers);
-            lottos.add(lotto);
+            lottos.add(new Lotto(numbers));
         }
 
         return lottos;
     }
 
-    public List<Integer> setLottoNumbers(String numbers) {
-        Integer[] lottoNumbersArray = Arrays.stream(numbers.split(","))
+    public List<Integer> chooseLottoNum(String numbers) {
+        List<Integer> chosenLottoNum = Arrays.stream(numbers.split(","))
                                         .map(Integer::parseInt)
-                                        .toArray(Integer[]::new);
+                                        .toList();
 
-        List<Integer> chosenLottoNum = new ArrayList<>();
-
-        for (int lottoNumber : lottoNumbersArray) {
-            validateRange(lottoNumber);
-            chosenLottoNum.add(lottoNumber);
+        for (int lottoNumber : chosenLottoNum) {
+            validator.validateRange(lottoNumber);
         }
 
-        validateDuplicate(chosenLottoNum);
+        validator.validateDuplicate(chosenLottoNum);
 
         return chosenLottoNum;
     }
 
-    public int setBonusNumbers(int number, List<Integer> chosenLottoNum) {
-        validateRange(number);
+    public int setBonusNum(int bonusNum, List<Integer> chosenLottoNum) {
+        validator.validateRange(bonusNum);
 
-        chosenLottoNum.add(number);
-        validateDuplicate(chosenLottoNum);
+        List<Integer> updatedLottoNum = new ArrayList<>(chosenLottoNum);
+        updatedLottoNum.add(bonusNum);
+        validator.validateDuplicate(updatedLottoNum);
 
-        return number;
+        return bonusNum;
     }
 
-    private void validateRange(int lottoNumber) {
-        if (lottoNumber < 1 || lottoNumber > 45) {
-            throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
-        }
+    public Map<Integer, Integer> computeLottoResult(List<Integer> chosenLottoNum, List<Lotto> lottos) {
+        LottoResult lottoResult = new LottoResult();
+        return lottoResult.computeLottoResult(chosenLottoNum, lottos);
     }
 
-    private void validateDuplicate(List<Integer> chosenLottoNum) {
-        Set<Integer> set  = new HashSet<>();
-        for (Integer number : chosenLottoNum) {
-            if (!set.add(number)) {
-                throw new IllegalArgumentException("[ERROR] 로또 번호는 중복되지 않아야 합니다.");
-            }
-        }
+    public Double calculateProfit(int purchaseAmount, Map<Integer, Integer> lottoResult) {
+        return profitCalculator.calculateProfit(purchaseAmount, lottoResult);
     }
 }

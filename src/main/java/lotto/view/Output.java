@@ -20,19 +20,19 @@ public class Output {
         }
     }
 
-    public void printChooseLottoNumbersMessage() {
+    public void printChooseLottoNumMessage() {
         System.out.println("\n" + Message.CHOOSE_LOTTO_NUMBERS.getMessage());
     }
 
-    public void printChooseBonusNumbersMessage() {
+    public void printChooseBonusNumMessage() {
         System.out.println("\n" + Message.CHOOSE_BONUS_NUMBERS.getMessage());
     }
 
-    public void printLottoResult(Map<Integer, Integer> lottoResult, List<String> lottoResultStr) {
+    public void printLottoResult(Map<Integer, Integer> lottoResultMap, List<String> lottoResultStr) {
         System.out.println("\n당첨통계\n---");
         int i = 0;
-        for (Integer key : lottoResult.keySet()) {
-            System.out.println(lottoResultStr.get(i) + " - " + lottoResult.get(key) + "개");
+        for (Integer key : lottoResultMap.keySet()) {
+            System.out.println(lottoResultStr.get(i) + " - " + lottoResultMap.get(key) + "개");
             i++;
         }
     }

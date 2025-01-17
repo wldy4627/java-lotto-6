@@ -25,7 +25,7 @@ public class Input {
         }
     }
 
-    public String scanChooseLottoNumbers() {
+    public String scanChooseLottoNum() {
         String numbers = sc.nextLine();
         if (numbers.isEmpty()) {
             throw new IllegalArgumentException("[ERROR] 로또 번호를 입력해주세요.");
@@ -33,7 +33,7 @@ public class Input {
         return numbers;
     }
 
-    public int scanChooseBonusNumbers() {
+    public int scanChooseBonusNum() {
         String number = sc.nextLine();
 
         if (!isNumeric(number)) {
